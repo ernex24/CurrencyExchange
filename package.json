@@ -10,10 +10,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/datetimepicker": "^3.0.9",
+    "@react-native-community/netinfo": "^5.9.10",
+    "@react-native-community/picker": "^1.8.1",
     "@react-native-picker/picker": "^1.9.10",
     "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-reanimated": "^1.13.2",
     "react-native-ui-lib": "^5.20.0"
   },
   "devDependencies": {

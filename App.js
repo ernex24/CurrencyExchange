@@ -13,22 +13,17 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
-  View,
-  Text,
-  Button,
   StatusBar,
   TextInput,
-  Picker
 } from 'react-native';
 
 import {
   Header,
   LearnMoreLinks,
-  Colors,
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import {View, Colors, Dialog, Text, Picker, Avatar, Assets, PanningProvider, Spacings, TextField,  Button} from 'react-native-ui-lib'; //eslint-disable-line
 
 const App: () => React$Node = () => {
   const [isLoading, setLoading] = useState(true);
@@ -40,7 +35,6 @@ const App: () => React$Node = () => {
 
   useEffect(() => {
     getCurrencies();
-    getExchange();
   }, []);
 
   const getCurrencies = () => {
@@ -76,21 +70,23 @@ const App: () => React$Node = () => {
   }
 
   //console.log(data)
-  console.log("From: " + fromCurrency)
-  console.log("To: " + toCurrency)
-  console.log("To exchange: " + amountToExchange)
-  console.log(exchanged && exchanged.rates && exchanged.rates[toCurrency])
+  console.log(fromCurrency)
+  console.log(toCurrency)
+  console.log(amountToExchange)
+  console.log(exchanged)
   return (
     <>
     <ScrollView>
-    <View style={styles.container}>
-      <Text>Cambiar moneda</Text>
-      <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+    <View flex paddingH-25 paddingT-120>
+      <Text >Currency exchange</Text>
+      <TextField 
+      text50 
+      placeholder="Amount"    
       onChangeText={text => setAmountToExchange(text)}
       value={amountToExchange}
-    />
-    <Picker
+      />
+
+    {/* <Picker
       selectedValue={fromCurrency}
       style={{height: 50, width: 250}}
       onValueChange={(itemValue, itemIndex) =>
@@ -100,10 +96,28 @@ const App: () => React$Node = () => {
         Object.entries(data).map(function([key,value]) {
         return <Picker.Item key={key} label={value.toString()} value={key} />})
       }
-    </Picker>
-    </View>
-    <View style={styles.container}>
-          <Picker
+    </Picker> */}
+
+    <Picker
+            placeholder="Select from currency"
+            floatingPlaceholder
+            value={fromCurrency}
+            enableModalBlur={false}
+            onChange={item => setFromCurrency(item)}
+            topBarProps={{title: 'Currencies'}}
+            style={{color: Colors.red20}}
+            showSearch
+            searchPlaceholder={'Search a currency'}
+            searchStyle={{color: Colors.blue30, placeholderTextColor: Colors.dark50}}
+            //onSearchChange={value => console.warn('value', value)}
+          >
+            {    
+              Object.entries(data).map(function([key,value]) {
+              return <Picker.Item key={key} label={value} value={key} />})
+            }
+          </Picker>
+   
+          {/* <Picker
             selectedValue={toCurrency}
             style={{height: 50, width: 250}}
             onValueChange={(itemValue, itemIndex) =>
@@ -113,15 +127,33 @@ const App: () => React$Node = () => {
                 Object.entries(data).map(function([key,value]) {
                 return <Picker.Item key={key} label={value.toString()} value={key} />})
               }
+          </Picker> */}
+           <Picker
+            placeholder="Select to currency"
+            floatingPlaceholder
+            value={toCurrency}
+            enableModalBlur={false}
+            onChange={item => setToCurrency(item)}
+            topBarProps={{title: 'Currencies'}}
+            style={{color: Colors.red20}}
+            showSearch
+            searchPlaceholder={'Search a currency'}
+            searchStyle={{color: Colors.blue30, placeholderTextColor: Colors.dark50}}
+            //onSearchChange={value => console.warn('value', value)}
+          >
+            {    
+              Object.entries(data).map(function([key,value]) {
+              return <Picker.Item key={key} label={value} value={key} />})
+            }
           </Picker>
-    </View>
-    <View style={styles.container2}></View>
-    <Button
-        title="Press me"
-        onPress={() => getCurrencies()}
-      />
-    <View style={styles.container2}>
-       <Text>{ exchanged && exchanged.rates && exchanged.rates[toCurrency] && exchanged.rates[toCurrency].rate_for_amount }</Text>
+  
+          <Button
+            text70 white background-orange30
+            label="Convert Currency"
+              onPress={() => getCurrencies()}
+            />
+
+       <Text blue50 text20>{ exchanged && exchanged.rates  }</Text>
     </View>
     </ScrollView>
     </>
