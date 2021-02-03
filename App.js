@@ -53,8 +53,11 @@ const App: () => React$Node = () => {
       .finally(() => setLoading(false));
   }
 
+  const from = fromCurrency.value
+  const to = toCurrency.value
+
   const getExchange = () => {
-    fetch(`https://currency-converter5.p.rapidapi.com/currency/convert?format=json&from=${fromCurrency}&to=${toCurrency}&amount=${amountToExchange}`, {
+    fetch(`https://currency-converter5.p.rapidapi.com/currency/convert?format=json&from=${from}&to=${to}&amount=${amountToExchange}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -69,34 +72,23 @@ const App: () => React$Node = () => {
       .finally(() => setLoading(false));
   }
 
-  //console.log(data)
-  console.log(fromCurrency)
-  console.log(toCurrency)
-  console.log(amountToExchange)
-  console.log(exchanged)
+  // console.log(data)
+   console.log(fromCurrency)
+   console.log(toCurrency)
+   console.log(amountToExchange)
+   console.log(exchanged)
+   console.log(exchanged && exchanged.rates && exchanged.rates[to] && exchanged.rates[to].rate_for_amount)
   return (
     <>
     <ScrollView>
     <View flex paddingH-25 paddingT-120>
-      <Text >Currency exchange</Text>
+      <Text >Currency change</Text>
       <TextField 
       text50 
       placeholder="Amount"    
       onChangeText={text => setAmountToExchange(text)}
       value={amountToExchange}
       />
-
-    {/* <Picker
-      selectedValue={fromCurrency}
-      style={{height: 50, width: 250}}
-      onValueChange={(itemValue, itemIndex) =>
-        setFromCurrency(itemValue)
-    }>
-      {    
-        Object.entries(data).map(function([key,value]) {
-        return <Picker.Item key={key} label={value.toString()} value={key} />})
-      }
-    </Picker> */}
 
     <Picker
             placeholder="Select from currency"
@@ -117,43 +109,32 @@ const App: () => React$Node = () => {
             }
           </Picker>
    
-          {/* <Picker
-            selectedValue={toCurrency}
-            style={{height: 50, width: 250}}
-            onValueChange={(itemValue, itemIndex) =>
-              setToCurrency(itemValue)
-            }>
-              {    
-                Object.entries(data).map(function([key,value]) {
-                return <Picker.Item key={key} label={value.toString()} value={key} />})
-              }
-          </Picker> */}
            <Picker
             placeholder="Select to currency"
             floatingPlaceholder
             value={toCurrency}
-            enableModalBlur={false}
-            onChange={item => setToCurrency(item)}
+            enableModalBlur={true}
+            onChange={value => setToCurrency(value)}
             topBarProps={{title: 'Currencies'}}
             style={{color: Colors.red20}}
             showSearch
             searchPlaceholder={'Search a currency'}
             searchStyle={{color: Colors.blue30, placeholderTextColor: Colors.dark50}}
-            //onSearchChange={value => console.warn('value', value)}
+            onSearchChange={value => console.warn('value', value)}
           >
             {    
               Object.entries(data).map(function([key,value]) {
               return <Picker.Item key={key} label={value} value={key} />})
             }
           </Picker>
-  
+          <Text blue50 text10 marginT-100 marginB-100 center>{exchanged && exchanged.rates && exchanged.rates[to] && exchanged.rates[to].rate_for_amount}</Text>
           <Button
             text70 white background-orange30
             label="Convert Currency"
-              onPress={() => getCurrencies()}
+              onPress={() => getExchange()}
             />
 
-       <Text blue50 text20>{ exchanged && exchanged.rates  }</Text>
+      
     </View>
     </ScrollView>
     </>
